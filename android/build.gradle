@@ -5,11 +5,10 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://mirror.tuna.tsinghua.edu.cn/flutter/download.flutter.io" }
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:4.1.0'
     }
 }
 
@@ -17,7 +16,6 @@ rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://mirror.tuna.tsinghua.edu.cn/flutter/download.flutter.io" }
     }
 }
 

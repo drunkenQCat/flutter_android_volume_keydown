@@ -13,9 +13,11 @@ class FlutterAndroidVolumeKeydown {
           case 0: return HardwareButton.volume_down;
           case 1: return HardwareButton.volume_up;
           case 2: return HardwareButton.power; 
+          case 3: return HardwareButton.volume_down_long;
+          case 4: return HardwareButton.volume_down_double;
           default:return HardwareButton.others;
         }
       });
 }
 
-enum HardwareButton { volume_up, volume_down, power, others }
+enum HardwareButton { volume_up, volume_down, power, volume_down_long, volume_down_double, others }

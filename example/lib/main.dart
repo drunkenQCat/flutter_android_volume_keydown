@@ -4,58 +4,77 @@ import 'dart:async';
 import 'package:flutter_android_volume_keydown/flutter_android_volume_keydown.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyHomePage());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
 
+class EventStream {
+  final StreamController<String> _streamController = StreamController<String>();
+
+  Stream<String> get stream => _streamController.stream;
+
+  void sendEvent(String eventText) {
+    _streamController.sink.add(eventText);
+  }
+
+  void dispose() {
+    _streamController.close();
+  }
+}
+
+class MyHomePage extends StatefulWidget {
   @override
-  State<MyApp> createState() => _MyAppState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyHomePageState extends State<MyHomePage> {
+  EventStream eventStream = EventStream();
   StreamSubscription<HardwareButton>? subscription;
+
   @override
   void initState() {
     super.initState();
+    startListening();
+  }
+
+  @override
+  void dispose() {
+    subscription?.cancel();
+    eventStream.dispose();
+    super.dispose();
   }
 
   void startListening() {
-    print("Start Listening");
     subscription = FlutterAndroidVolumeKeydown.stream.listen((event) {
       if (event == HardwareButton.volume_down) {
-        print("Volume down received");
+        eventStream.sendEvent("Volume down received");
       } else if (event == HardwareButton.volume_up) {
-        print("Volume up received");
+        eventStream.sendEvent("Volume up received");
       } else if (event == HardwareButton.power) {
-        print("Power key received");
+        eventStream.sendEvent("Power button received");
+      } else if (event == HardwareButton.volume_down_long) {
+        eventStream.sendEvent("Long press on volume down received");
+      } else if (event == HardwareButton.volume_down_double) {
+        eventStream.sendEvent("Double press on volume down received");
+      } else {
+        eventStream.sendEvent("Other hardware button received");
       }
     });
   }
 
-  void stopListening() {
-    subscription?.cancel();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Column(
-            children: [
-              ElevatedButton(
-                  onPressed: startListening,
-                  child: const Text("Start listening")),
-              ElevatedButton(
-                  onPressed: stopListening,
-                  child: const Text("Stop listening")),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Event Stream Example'),
+      ),
+      body: Center(
+        child: StreamBuilder<String>(
+          stream: eventStream.stream,
+          initialData: 'Waiting for physical key ...',
+          builder: (context, snapshot) {
+            return Text(snapshot.data!);
+          },
         ),
       ),
     );
