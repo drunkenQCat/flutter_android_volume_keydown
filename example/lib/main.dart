@@ -22,11 +22,14 @@ class _MyAppState extends State<MyApp> {
   }
 
   void startListening() {
+    print("Start Listening");
     subscription = FlutterAndroidVolumeKeydown.stream.listen((event) {
       if (event == HardwareButton.volume_down) {
         print("Volume down received");
       } else if (event == HardwareButton.volume_up) {
         print("Volume up received");
+      } else if (event == HardwareButton.power) {
+        print("Power key received");
       }
     });
   }
