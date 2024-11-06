@@ -64,19 +64,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Event Stream Example'),
-      ),
-      body: Center(
-        child: StreamBuilder<String>(
-          stream: eventStream.stream,
-          initialData: 'Waiting for physical key ...',
-          builder: (context, snapshot) {
-            return Text(snapshot.data!);
-          },
+    return MaterialApp(
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text('Event Stream Example'),
+          ),
+          body: Center(
+            child: StreamBuilder<String>(
+              stream: eventStream.stream,
+              initialData: 'Waiting for physical key ...',
+              builder: (context, snapshot) {
+                return Text(snapshot.data!);
+              },
+            ),
+          ),
         ),
-      ),
     );
   }
 }

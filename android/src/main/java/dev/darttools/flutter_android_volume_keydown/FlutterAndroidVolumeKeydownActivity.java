@@ -23,7 +23,7 @@ public class FlutterAndroidVolumeKeydownActivity extends FlutterActivity {
             eventSink.success(1);
             return true;
         }
-        if(keyCode == POWER_OFF && eventSink != null) {
+        if(keyCode == KEYCODE_POWER && eventSink != null) {
             eventSink.success(2);
             return true;
         }
